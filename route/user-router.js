@@ -5,7 +5,6 @@ const debug = require('debug')('roverview: user-router');
 const Router = require('express').Router;
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
-
 const createError = require('http-errors');
 
 const User = require('../model/user.js');
@@ -34,10 +33,13 @@ userRouter.post('/api/signup', jsonParser, (req, res, next) => {
 userRouter.get('/api/signin', basicAuth, (req, res, next) => {
   debug('GET: /api/signin');
 
-  User.findOne({ email: req.auth.email })
-    .then(user => user.comparePasswordHash(req.auth.password))
-    .then(user => user.generateToken())
-    .then(token => res.send(token))
+  User.findOne({ username: req.auth.username })
+    .then(user => user.validatePasswordHash(req.auth.password))
+    .then(user => {
+      user.generateToken();
+      return user;
+    })
+    .then(user => res.send(user))
     .catch(next);
 });
 
