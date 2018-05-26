@@ -1,0 +1,35 @@
+{
+  "name": "rover-mongo-backend",
+  "version": "1.0.0",
+  "description": "roverview new backend",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "coveralls": "^3.0.1",
+    "debug": "^3.1.0",
+    "dotenv": "^5.0.1",
+    "eslint": "^4.19.1",
+    "express": "^4.16.3",
+    "faker": "^4.1.0",
+    "http-errors": "^1.6.3",
+    "istanbul": "^0.4.5",
+    "jest": "^23.0.0",
+    "jsonwebtoken": "^8.2.1",
+    "mongoose": "^5.1.2",
+    "mongoose-unique-validator": "^2.0.1",
+    "morgan": "^1.9.0",
+    "superagent": "^3.8.3"
+  }
+}
