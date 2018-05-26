@@ -18,6 +18,7 @@ userRouter.post('/api/signup', jsonParser, (req, res, next) => {
   delete req.body.password;
 
   let user = new User(req.body);
+
   user.generatePasswordHash(password)
     .then(user => user.save())
     .then(user => user.generateToken())
