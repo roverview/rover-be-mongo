@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   password:{ type: String, required: true },
   findHash: { type: String, unique: true },
-  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'photo' }],
+  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
 }, { timestamps: true });
 
 userSchema.methods.generatePasswordHash = function(password) {

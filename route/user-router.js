@@ -44,10 +44,11 @@ userRouter.get('/api/signin', basicAuth, (req, res, next) => {
     .catch(next);
 });
 
-userRouter.get('/api/:userId/photos', bearerAuth, (req, res, next) => {
+// userRouter.get('/api/:userId/photos', bearerAuth, (req, res, next) => {
+userRouter.get('/api/:userId/photos', (req, res, next) => {
   debug('GET: /:userId/photos');
 
-  User.findOne({ userId: req.params.userId })
+  User.findById({ _id: req.params.userId })
     .populate('photos')
     .then(user => res.json(user))
     .catch(next);

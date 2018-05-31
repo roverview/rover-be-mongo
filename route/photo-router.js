@@ -30,12 +30,12 @@ photoRouter.post('/api/:userId', jsonParser, (req, res, next) => {
       return new Photo(photoObj).save();
     })
     .then(photo => {
-      this.tempUser.photos.push(photo._id);
+      this.tempUser.photos.push(photo);
       this.tempPhoto = photo;
       return this.tempUser.save();
     })
     .then(() => {
-      return res.json(this.tempPhoto);
+      return res.json(this.tempUser);
     })
     .catch(next);
 });
