@@ -11,15 +11,32 @@ const Photo = require('../model/photo.js');
 
 const photoRouter = module.exports = Router();
 
-photoRouter.post('/api/:userId', bearerAuth, jsonParser, (req, res, next) => {
+// photoRouter.post('/api/:userId', bearerAuth, jsonParser, (req, res, next) => {
+photoRouter.post('/api/:userId', jsonParser, (req, res, next) => {
   debug('POST: /api/:userId');
 
-  console.log(req.body)
-  // if(!req.body.email) return next(createError(400, 'bad request'));
+  let photoObj = {
+    imageId: req.body.id,
+    roverName: req.body.rover.name,
+    camName: req.body.camera.full_name,
+    earthDate: req.body.earth_date,
+    imgSrc: req.body.img_src,
+  };
 
-  req.body.userId = req.user._id;
-  new Photo(req.body).save()
-    .then( photo => res.json(photo))
+  User.findById(req.params.userId)
+    .then(user => {
+      photoObj.userId = user._id;
+      this.tempUser = user;
+      return new Photo(photoObj).save();
+    })
+    .then(photo => {
+      this.tempUser.photos.push(photo._id);
+      this.tempPhoto = photo;
+      return this.tempUser.save();
+    })
+    .then(() => {
+      return res.json(this.tempPhoto);
+    })
     .catch(next);
 });
 

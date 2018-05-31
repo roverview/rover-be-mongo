@@ -55,7 +55,7 @@ userSchema.methods.generateFindHash = function() {
     function _generateFindHash() {
       this.findHash = crypto.randomBytes(32).toString('hex');
       this.save()
-        .then ( () => resolve(this.findHash))
+        .then (() => resolve(this.findHash))
         .catch(reject);
     }
   });
@@ -66,12 +66,12 @@ userSchema.methods.generateToken = function() {
 
   return new Promise((resolve, reject) => {
     this.generateFindHash()
-      .then( findHash => resolve(jwt.sign({ token: findHash }, process.env.APP_SECRET)))
+      .then(findHash => resolve(jwt.sign({ token: findHash }, process.env.APP_SECRET)))
       .catch(reject);
   });
 };
 
-userSchema.findByIdAndAddPhoto = function(id, photo) {
+userSchema.methods.findByIdAndAddPhoto = function(id, photo) {
   debug('findByIdAndAddPhoto');
 
   return userSchema.findById(id)
