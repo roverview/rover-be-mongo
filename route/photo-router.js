@@ -2,7 +2,7 @@
 
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const createError = require('http-errors');
+// const createError = require('http-errors');
 const debug = require('debug')('roverview: photo-router');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 
@@ -40,59 +40,17 @@ photoRouter.post('/api/:userId', jsonParser, (req, res, next) => {
     .catch(next);
 });
 
-// photoRouter.get('/api/profile', bearerAuth, (req, res, next) => {
-//   debug('GET: /api/profile');
-//   Profile.findOne({ userId: req.user._id })
-//     // .populate('companies')
-//     .populate({
-//       path: 'companies',
-//       populate: [
-//         { path: 'jobPosting', model: 'job' },
-//         { path: 'events' },
-//         { path: 'contacts' },
-//       ],
-//     })
-//     .then( profile => res.json(profile))
-//     .catch(next);
-// });
+// photoRouter.delete('/api/:userId/:photoId', bearerAuth, function(req, res, next) {
+photoRouter.delete('/api/:userId/:photoId', function(req, res, next) {
+  debug('DELETE: /api/:userId/:photoId');
 
-// photoRouter.get('/api/profile/:profileId', bearerAuth, function(req, res, next) {
-//   debug('GET: /api/profile/:profileId');
-
-//   Profile.findById(req.params.profileId)
-//     .populate({
-//       path: 'companies',
-//       populate: [
-//         { path: 'jobPosting' },
-//         { path: 'events' },
-//         { path: 'contacts' },
-//       ],
-//     })
-//     .then( profile => res.json(profile))
-//     .catch(next);
-// });
-
-// photoRouter.delete('/api/profile/:profileId', bearerAuth, function(req, res, next) {
-//   debug('DELETE: /api/profile');
-//   Profile.findByIdAndRemove(req.params.profileId)
-//     .then( () => res.send(204))
-//     .catch(next);
-// });
-
-// photoRouter.put('/api/profile/:profileId', bearerAuth, jsonParser, function(req, res, next) {
-//   debug('PUT: /api/profile/:profileId');
-
-//   if(Object.keys(req.body).length === 0) return next(createError(400, 'bad request'));
-
-//   Profile.findByIdAndUpdate(req.params.profileId, req.body, { new: true })
-//     .populate({
-//       path: 'companies',
-//       populate: [
-//         { path: 'jobPosting'},
-//         { path: 'events' },
-//         { path: 'contacts' },
-//       ],
-//     })
-//     .then( profile => res.json(profile))
-//     .catch(next);
-// });
+  User.findById(req.params.userId)
+    .then(user => {
+      return user;
+    })
+    .then(() => {
+      return Photo.findByIdAndRemove(req.params.photoId);
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
