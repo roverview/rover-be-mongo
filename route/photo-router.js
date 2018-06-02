@@ -24,6 +24,7 @@ photoRouter.post('/api/:userId', jsonParser, (req, res, next) => {
   };
 
   User.findById(req.params.userId)
+    .populate('photos')
     .then(user => {
       photoObj.userId = user._id;
       this.tempUser = user;
